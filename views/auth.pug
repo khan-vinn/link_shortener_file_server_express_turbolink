@@ -1,0 +1,16 @@
+extends layout.pug 
+block content 
+    .app
+        .login 
+            h1 Sign in 
+            form(action="/auth/signin" method="post")
+                input#username(type="text" name="username" placeholder="Username")
+                input#password(type="password" name="password" placeholder="Password")
+                input(type="submit" value="Submit")
+        .signup 
+            h1 Sign up
+            form(action="/auth/signup" method="post")
+                input#username(type="text" name="username" placeholder="Username")
+                input#password(type="password" name="password" placeholder="Password")
+                input#con-password(type="password" name="con_password" placeholder="Confirm password")
+                input(type="submit" value="Submit")
