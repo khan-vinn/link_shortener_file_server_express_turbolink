@@ -1,0 +1,16 @@
+extends layout.pug
+
+block content
+    if form 
+        .file-upload 
+            form(action="/f" method="post")
+                label(for="file_upload") Select file
+                input#file_upload(type="file" name="file")
+                input(type="submit" value="Submit")
+    else if view
+        .file-view 
+            h1 file name here 
+            p file size here 
+            p file type here 
+            p file upload count here 
+            a(href="#") file download
