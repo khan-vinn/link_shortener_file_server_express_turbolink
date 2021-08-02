@@ -4,7 +4,7 @@ const { ensureNotAuthenticated } = require('./middleware');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
-router.get("/", (req, res, next) => {
+router.get("/", ensureNotAuthenticated, (req, res, next) => {
     res.render("file", { form: true })
 })
 

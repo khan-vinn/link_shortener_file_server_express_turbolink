@@ -9,7 +9,22 @@ router.get("/", ensureFromAuthenticated, (req, res) => {
     res.render("auth")
 })
 
-router.post("/signin", ensureFromAuthenticated,
+router.post("/signin",
+    (req, res, next) => {
+        if (typeof (req.body.username) === "string"
+            && (req.body.username.length > 4)
+            && (req.body.username.length < 18)) {
+            if (typeof (req.body.password) === "string"
+                && (req.body.password.length > 5)) {
+                next()
+            } else {
+                return res.render("error", { message: "Validate Error", error: { status: 500, stack: "too short or long username min length is 5 and max length is 17" } })
+            }
+        } else {
+            return res.render("error", { message: "Validate Error", error: { status: 500, stack: "too short password/ min length of password is 6 " } })
+        }
+    },
+    ensureFromAuthenticated,
     passport.authenticate('local', { failureRedirect: '/auth' }),
     (req, res) => {
         res.redirect("/")
@@ -33,7 +48,11 @@ router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
                 if (err) {
                     next(err)
                 } else if (user) {
-                    res.redirect("/")
+                    res.render("error", {
+                        message: "DB Validate Error", error: {
+                            status: 403, stack: "Please choose another username"
+                        }
+                    })
                 } else {
                     const hash = bcrypt.hashSync(req.body.password, 12)
                     User.create({
@@ -41,10 +60,8 @@ router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
                         password: hash
                     }, (err, doc) => {
                         if (err) {
-                            console.log(err)
                             res.redirect("/")
                         } else {
-                            console.log(doc)
                             next(null, doc)
                         }
                     })
@@ -52,10 +69,10 @@ router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
             })
 
         } else {
-            res.status(304).send("too short password or password dont equal password confirm")
+            return res.render("error", { message: "Validate Error", error: { status: 500, stack: "too short password or password dont equal password confirm" } })
         }
     } else {
-        res.status(304).send("too short length username ( > 4 || < 20)")
+        return res.render("error", { message: "Validate Error", error: { status: 500, stack: "too short length username( > 4 || < 20)" } })
     }
 }, passport.authenticate("local", { failureRedirect: "/auth" }), (req, res) => {
     res.redirect("/")

@@ -1,6 +1,9 @@
 extends layout
-
 block content
   h1= message
   h2= error.status
   pre #{error.stack}
+  h1#seconds
+  script.
+    const time = 7
+    setTimeout(()=> {window.location.href="/"}, time *1000 )

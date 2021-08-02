@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 
+const FileHistorySchema = mongoose.Schema({})
 const FileSchema = mongoose.Schema({
     original_name: {
         type: String,
@@ -24,7 +25,5 @@ const FileSchema = mongoose.Schema({
         type: mongoose.Types.ObjectId,
         required: true
     }
-})
-const FileHistorySchema = mongoose.Schema({
 })
 module.exports = FileSchema
