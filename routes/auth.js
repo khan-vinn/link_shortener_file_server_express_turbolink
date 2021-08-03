@@ -54,16 +54,17 @@ router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
                         }
                     })
                 } else {
-                    const hash = bcrypt.hashSync(req.body.password, 12)
-                    User.create({
-                        username: req.body.username,
-                        password: hash
-                    }, (err, doc) => {
-                        if (err) {
-                            res.redirect("/")
-                        } else {
-                            next(null, doc)
-                        }
+                    bcrypt.hash(req.body.password, 12).then(hash => {
+                        User.create({
+                            username: req.body.username,
+                            password: hash
+                        }, (err, doc) => {
+                            if (err) {
+                                res.redirect("/")
+                            } else {
+                                next(null, doc)
+                            }
+                        })
                     })
                 }
             })

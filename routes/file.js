@@ -9,7 +9,8 @@ router.get("/", ensureNotAuthenticated, (req, res, next) => {
 })
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
-
+    req.flash("info", (req.file.path + " " + req.file.size + ' ' + req.file.mimetype))
+    res.redirect("/")
 })
 
 router.get("/:id/view", (req, res, next) => {

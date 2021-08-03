@@ -18,8 +18,14 @@ passport.use(new LocalStrategy(
         User.findOne({ username }, function (err, user) {
             if (err) { return done(err); }
             if (!user) { return done(null, false); }
-            if (!bcrypt.compareSync(password, user.password)) { return done(null, false); }
-            return done(null, user);
+            bcrypt.compare(password, user.password)
+                .then(value => {
+                    if (!value) {
+                        return done(null, false);
+                    }
+                    return done(null, user);
+                })
+
         });
     }
 ));
