@@ -29,6 +29,12 @@ const FileSchema = mongoose.Schema({
         default: nanoid(10),
         unique: true,
         minLength: 4
+    }, type: {
+        type: String,
+        required: true
+    }, full_path: {
+        type: String,
+        required: true
     }
 })
 module.exports = FileSchema

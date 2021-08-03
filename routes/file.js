@@ -7,14 +7,17 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
 router.get("/", ensureNotAuthenticated, (req, res, next) => {
-    res.render("file", { form: true })
+    res.render("file/form")
 })
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
     const file = req.file
+    console.log(file)
     File.create({
         original_name: file.originalname,
         sys_name: file.filename,
+        type: file.mimetype,
+        full_path: file.path,
         size: file.size,
         _lord: req.user._id,
     }, (error, file) => {
@@ -41,7 +44,35 @@ router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
 })
 
 router.get("/:id/view", (req, res, next) => {
-    res.render("file", { filename: req.params.id, view: true })
+    File.findOne({ short_name: req.params.id }, (err, doc) => {
+        if (err) {
+            return res.render("error", {
+                message: `Something was wrong to find file with id ${req.parmas.id}`,
+                error: {
+                    status: 500,
+                    stack: err
+                }
+            })
+        } else if (!doc) {
+            return res.render("error", {
+                message: `not Found file with id ${req.parmas.id}`,
+                error: {
+                    status: 404,
+                    stack: "no file with this id"
+                }
+            })
+        }
+        return res.render("file/index", {
+            file_h: {
+                name: doc.original_name,
+                date: doc.created_at,
+                size: doc.size,
+                type: doc.type,
+                link: doc.short_name
+            },
+        })
+
+    })
 })
 
 router.get("/:id", (req, res, next) => {

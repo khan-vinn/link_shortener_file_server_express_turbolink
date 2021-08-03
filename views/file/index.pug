@@ -1,0 +1,11 @@
+extends ../layout.pug
+
+block content
+    .file-view 
+        h1= file_h.name
+        p= file_h.size + " bytes"
+        p= file_h.type
+        p= new Date(file_h.date)
+        p 1 uploads
+        - const fileLink = `/f/${file_h.link}`  
+        a(href=fileLink) Open 
