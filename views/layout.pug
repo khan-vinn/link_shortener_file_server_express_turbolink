@@ -7,4 +7,8 @@ html
       link(rel="shortcut icon" href="/favicon.ico" type="image/x-icon")
   body
     .wrapper
+      if flash
+        - const flash_type_class = `flash_${flash.type}`
+        div(class= flash_type_class)
+          p= flash.message
       block content

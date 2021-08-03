@@ -55,7 +55,7 @@ router.get("/:id/view", (req, res, next) => {
             })
         } else if (!doc) {
             return res.render("error", {
-                message: `not Found file with id ${req.parmas.id}`,
+                message: `not Found file with id ${req.params.id}`,
                 error: {
                     status: 404,
                     stack: "no file with this id"
@@ -75,8 +75,30 @@ router.get("/:id/view", (req, res, next) => {
     })
 })
 
+router.get("/:id/stats", (req, res, next) => {
+})
+
 router.get("/:id", (req, res, next) => {
-    res.download(req.params.id)
+    File.findOne({ short_name: req.params.id }, (err, file) => {
+        if (err) {
+            return res.render("error", {
+                message: "error download file", error: {
+                    status: 500,
+                    stack: err
+                }
+            })
+        } else if (!file) {
+            return res.render("error", {
+                message: "error to find in database information about this file",
+                error: {
+                    status: 404,
+                    stack: "File not found"
+                }
+            })
+        }
+        console.log(file)
+        res.download(file.full_path, file.original_name)
+    })
 })
 
 module.exports = router;
