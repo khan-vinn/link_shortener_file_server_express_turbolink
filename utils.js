@@ -26,11 +26,10 @@ function appUtils(app) {
     app.use(cookieParser());
     app.use(lessMiddleware(path.join(__dirname, 'public')));
     app.use(express.static(path.join(__dirname, 'public')));
-    app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
+    app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true, secure: true }));
 
     app.use(passport.initialize());
     app.use(passport.session());
 }
-
 
 module.exports = appUtils
