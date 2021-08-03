@@ -5,7 +5,9 @@ const lessMiddleware = require('less-middleware');
 const logger = require('morgan');
 const turbolinks = require("turbolinks-express")
 const express = require('express');
-var favicon = require('serve-favicon')
+const session = require('express-session')
+const favicon = require('serve-favicon')
+const flash = require("connect-flash")
 
 function appUtils(app) {
     // view engine setup
@@ -14,6 +16,8 @@ function appUtils(app) {
     //turbolinks
     app.use(turbolinks.redirect)
     app.use(turbolinks.location)
+    //flash messages
+    app.use(flash())
 
     app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
     app.use(logger('dev'));
@@ -22,7 +26,7 @@ function appUtils(app) {
     app.use(cookieParser());
     app.use(lessMiddleware(path.join(__dirname, 'public')));
     app.use(express.static(path.join(__dirname, 'public')));
-    app.use(require('express-session')({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
+    app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
 
     app.use(passport.initialize());
     app.use(passport.session());

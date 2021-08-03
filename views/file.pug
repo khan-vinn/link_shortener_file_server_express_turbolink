@@ -3,7 +3,7 @@ extends layout.pug
 block content
     if form 
         .file-upload 
-            form(action="/f" method="post")
+            form(action="/f" method="post" enctype="multipart/form-data")
                 label(for="file_upload") Select file
                 input#file_upload(type="file" name="file")
                 input(type="submit" value="Submit")
