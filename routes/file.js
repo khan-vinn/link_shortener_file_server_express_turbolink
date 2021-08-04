@@ -7,7 +7,14 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
 router.get("/", ensureNotAuthenticated, (req, res, next) => {
-    res.render("file/form")
+    const flashMessages = [{
+        type: "error",
+        messages: req.flash("error")
+    }, {
+        type: "success",
+        message: req.flash("success")
+    }]
+    res.render("file/form", { flash: flashMessages })
 })
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {

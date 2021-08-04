@@ -6,7 +6,14 @@ const { ensureFromAuthenticated } = require('./middleware');
 const router = express.Router();
 
 router.get("/", ensureFromAuthenticated, (req, res) => {
-    res.render("auth")
+    const flashMessages = [{
+        type: "error",
+        messages: req.flash("error")
+    }, {
+        type: "success",
+        message: req.flash("success")
+    }]
+    res.render("auth", { "flash": flashMessages })
 })
 
 router.post("/signin",
