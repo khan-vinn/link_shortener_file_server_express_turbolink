@@ -23,7 +23,6 @@ router.get("/", ensureNotAuthenticated, (req, res, next) => {
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
     const file = req.file
-    console.log(file)
     File.create({
         original_name: file.originalname,
         sys_name: file.filename,
