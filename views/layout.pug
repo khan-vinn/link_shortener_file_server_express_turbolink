@@ -7,11 +7,10 @@ html
       link(rel="shortcut icon" href="/favicon.ico" type="image/x-icon")
   body
     .wrapper
-      - console.log(flash)
       .flash_messages
         if flash
           each value, key in flash
-            -let flash_class = `flash_${key}`
+            -let flash_class = `flash_${key} flash`
             div(class=flash_class)
               p= value 
       block content

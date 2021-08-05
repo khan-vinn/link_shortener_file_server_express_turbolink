@@ -10,17 +10,18 @@ a {
 
 .flash_messages {
   font-size: 18px;
-  border: 1px solid rgb(247, 242, 233);
   .flash_ {
     &error {
       background-color: rgba(255, 30, 0, 0.545);
       color: rgba(255, 0, 0, 0.904);
-      padding: 4px;
     }
     &success {
       background-color: #11ff0092;
       color: rgb(105, 195, 36);
-      padding: 4px;
     }
+  }
+  .flash {
+    border: 1px solid rgb(247, 242, 233);
+    padding: 4px;
   }
 }
