@@ -7,14 +7,18 @@ const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
 router.get("/", ensureNotAuthenticated, (req, res, next) => {
-    const flashMessages = [{
-        type: "error",
-        messages: req.flash("error")
-    }, {
-        type: "success",
-        message: req.flash("success")
-    }]
-    res.render("file/form", { flash: flashMessages })
+    const succ = req.flash("success")
+    const err = req.flash("error")
+    const flashMessages = () => {
+        if (succ.length > 0 && err.length > 0) {
+            return ({ "error": err, "success": succ })
+        } else if (succ.length > 0) {
+            return ({ "success": succ })
+        } else if (err.length > 0) {
+            return ({ "error": err })
+        }
+    }
+    res.render("file/form", { flash: flashMessages() })
 })
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
@@ -58,6 +62,7 @@ router.get("/:id/view", (req, res, next) => {
     File.findOne({ short_name: req.params.id }, (error, doc) => {
         if (error) {
             req.flash("error", error)
+            res.redirect("/404")
             // res.render("")
             // return res.render("error", {
             //     message: `Something was wrong to find file with id ${req.parmas.id}`,
@@ -68,6 +73,7 @@ router.get("/:id/view", (req, res, next) => {
             // })
         } else if (!doc) {
             req.flash("error", "File not found")
+            res.redirect("/404")
             // return res.render("error", {
             //     message: `not Found file with id ${req.params.id}`,
             //     error: {
@@ -96,6 +102,7 @@ router.get("/:id", (req, res, next) => {
     File.findOne({ short_name: req.params.id }, (error, file) => {
         if (error) {
             req.flash("error", error)
+            res.redirect("/404")
             // res.render()
             // return res.render("error", {
             //     message: "error download file", error: {
@@ -105,6 +112,7 @@ router.get("/:id", (req, res, next) => {
             // })
         } else if (!file) {
             req.flash("error", "File not found")
+            res.redirect("/404")
             // return res.render("error", {
             //     message: "error to find in database information about this file",
             //     error: {
