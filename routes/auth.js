@@ -6,14 +6,18 @@ const { ensureFromAuthenticated } = require('./middleware');
 const router = express.Router();
 
 router.get("/", ensureFromAuthenticated, (req, res) => {
-    const flashMessages = [{
-        type: "error",
-        messages: req.flash("error")
-    }, {
-        type: "success",
-        message: req.flash("success")
-    }]
-    res.render("auth", { "flash": flashMessages })
+    const succ = req.flash("success")
+    const err = req.flash("error")
+    const flashMessages = () => {
+        if (succ.length > 0 && err.length > 0) {
+            return ({ "error": err, "success": succ })
+        } else if (succ.length > 0) {
+            return ({ "success": succ })
+        } else if (err.length > 0) {
+            return ({ "error": err })
+        }
+    }
+    res.render("auth", { "flash": flashMessages() })
 })
 
 router.post("/signin",
@@ -43,6 +47,7 @@ router.post("/signin",
 
 router.get("/logout", (req, res, next) => {
     req.logOut()
+    req.flash("success", "You are logout! To continue please sign in or sign up. ")
     res.redirect("/auth")
 })
 
@@ -94,6 +99,7 @@ router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
         // return res.render("error", { message: "Validate Error", error: { status: 500, stack: "too short length username( > 4 || < 20)" } })
     }
 }, passport.authenticate("local", { failureRedirect: "/auth" }), (req, res) => {
+    req.flash("success", "successufly registred")
     res.redirect("/")
 })
 
