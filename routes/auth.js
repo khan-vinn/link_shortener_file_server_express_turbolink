@@ -2,22 +2,11 @@ const express = require('express');
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { User } = require('../models');
-const { ensureFromAuthenticated } = require('./middleware');
+const { ensureFromAuthenticated, flashMessageProvide, ensureNotAuthenticated } = require('./middleware');
 const router = express.Router();
 
-router.get("/", ensureFromAuthenticated, (req, res) => {
-    const succ = req.flash("success")
-    const err = req.flash("error")
-    const flashMessages = () => {
-        if (succ.length > 0 && err.length > 0) {
-            return ({ "error": err, "success": succ })
-        } else if (succ.length > 0) {
-            return ({ "success": succ })
-        } else if (err.length > 0) {
-            return ({ "error": err })
-        }
-    }
-    res.render("auth", { "flash": flashMessages() })
+router.get("/", ensureFromAuthenticated, flashMessageProvide, (req, res) => {
+    res.render("auth")
 })
 
 router.post("/signin",
@@ -43,7 +32,7 @@ router.post("/signin",
         res.redirect("/")
     })
 
-router.get("/logout", (req, res, next) => {
+router.get("/logout", ensureNotAuthenticated, (req, res, next) => {
     req.logOut()
     req.flash("success", "You are logout! To continue please sign in or sign up. ")
     res.redirect("/auth")

@@ -2,23 +2,12 @@ const express = require('express');
 const multer = require("multer");
 
 const { File } = require('../models');
-const { ensureNotAuthenticated } = require('./middleware');
+const { ensureNotAuthenticated, flashMessageProvide } = require('./middleware');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
-router.get("/", ensureNotAuthenticated, (req, res, next) => {
-    const succ = req.flash("success")
-    const err = req.flash("error")
-    const flashMessages = () => {
-        if (succ.length > 0 && err.length > 0) {
-            return ({ "error": err, "success": succ })
-        } else if (succ.length > 0) {
-            return ({ "success": succ })
-        } else if (err.length > 0) {
-            return ({ "error": err })
-        }
-    }
-    res.render("file/form", { flash: flashMessages() })
+router.get("/", ensureNotAuthenticated, flashMessageProvide, (req, res, next) => {
+    res.render("file/form")
 })
 
 router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {

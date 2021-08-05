@@ -1,11 +1,14 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  box-sizing: border-box;
+  margin: auto;
+  width: 100%;
 }
-
-a {
-  color: #00b7ff;
-  padding-right: 20px;
+.wrapper {
+  a {
+    color: #00b7ff;
+    padding-right: 20px;
+  }
 }
 
 .flash_messages {
@@ -16,8 +19,8 @@ a {
       color: rgba(255, 0, 0, 0.904);
     }
     &success {
-      background-color: #11ff0092;
       color: rgb(105, 195, 36);
+      background-color: rgba(60, 212, 33, 0.559);
     }
   }
   .flash {

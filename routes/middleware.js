@@ -13,4 +13,17 @@ function ensureFromAuthenticated(req, res, next) {
     next()
 }
 
-module.exports = { ensureNotAuthenticated, ensureFromAuthenticated }
+function flashMessageProvide(req, res, next) {
+    const succ = req.flash("success")
+    const err = req.flash("error")
+    if (succ.length > 0 && err.length > 0) {
+        res.locals.flash = ({ "error": err, "success": succ })
+    } else if (succ && succ.length > 0) {
+        res.locals.flash = ({ "success": succ })
+    } else if (err && err.length > 0) {
+        res.locals.flash = ({ "error": err })
+    }
+    next()
+}
+
+module.exports = { ensureNotAuthenticated, ensureFromAuthenticated, flashMessageProvide }
