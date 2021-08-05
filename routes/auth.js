@@ -6,6 +6,17 @@ const { ensureFromAuthenticated } = require('./middleware');
 const router = express.Router();
 
 router.get("/", ensureFromAuthenticated, (req, res) => {
+    const succ = req.flash("success")
+    const err = req.flash("error")
+    const flashMessages = () => {
+        if (succ.length > 0 && err.length > 0) {
+            return ({ "error": err, "success": succ })
+        } else if (succ.length > 0) {
+            return ({ "success": succ })
+        } else if (err.length > 0) {
+            return ({ "error": err })
+        }
+    }
     res.render("auth", { "flash": flashMessages() })
 })
 
