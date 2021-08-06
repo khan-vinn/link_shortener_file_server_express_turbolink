@@ -8,7 +8,7 @@ const upload = multer({ dest: 'uploads/' })
 
 router.route("/")
     .get(ensureNotAuthenticated, flashMessageProvideToRender, (req, res, next) => {
-        res.render("file/form")
+        res.render("files/form")
     })
     .post(ensureNotAuthenticated, upload.single("file"), (req, res) => {
         const file = req.file
@@ -42,7 +42,7 @@ router.get("/:id/view", (req, res, next) => {
             req.flash("error", "File not found")
             res.redirect("/404")
         } else {
-            return res.render("file/elem", {
+            return res.render("files/elem", {
                 file_h: {
                     name: doc.original_name,
                     date: doc.created_at,
