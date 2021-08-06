@@ -5,7 +5,6 @@ const mongoose = require("mongoose")
 const appUtils = require("./utils");
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const fileRouter = require("./routes/file")
 const linkRouter = require("./routes/link")
@@ -22,7 +21,6 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
 
 //routes
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/auth', authRouter)
 app.use('/f', fileRouter)
 app.use('/l', linkRouter)
