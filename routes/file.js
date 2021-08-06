@@ -6,32 +6,32 @@ const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middl
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
-router.get("/", ensureNotAuthenticated, flashMessageProvideToRender, (req, res, next) => {
-    res.render("file/form")
-})
-
-router.post("/", ensureNotAuthenticated, upload.single("file"), (req, res) => {
-    const file = req.file
-    File.create({
-        original_name: file.originalname,
-        sys_name: file.filename,
-        type: file.mimetype,
-        full_path: file.path,
-        size: file.size,
-        _lord: req.user._id,
-    }, (error, file) => {
-        if (error) {
-            req.flash("error", error)
-            res.redirect("/f")
-        } else if (!file) {
-            req.flash("error", "Error on save file")
-            res.redirect("/f")
-        } else {
-            req.flash("success", "File saved successfully")
-            return res.redirect(`/f/${file.short_name}/view`)
-        }
+router.route("/")
+    .get(ensureNotAuthenticated, flashMessageProvideToRender, (req, res, next) => {
+        res.render("file/form")
     })
-})
+    .post(ensureNotAuthenticated, upload.single("file"), (req, res) => {
+        const file = req.file
+        File.create({
+            original_name: file.originalname,
+            sys_name: file.filename,
+            type: file.mimetype,
+            full_path: file.path,
+            size: file.size,
+            _lord: req.user._id,
+        }, (error, file) => {
+            if (error) {
+                req.flash("error", error)
+                res.redirect("/f")
+            } else if (!file) {
+                req.flash("error", "Error on save file")
+                res.redirect("/f")
+            } else {
+                req.flash("success", "File saved successfully")
+                return res.redirect(`/f/${file.short_name}/view`)
+            }
+        })
+    })
 
 router.get("/:id/view", (req, res, next) => {
     File.findOne({ short_name: req.params.id }, (error, doc) => {
@@ -57,6 +57,7 @@ router.get("/:id/view", (req, res, next) => {
 })
 
 router.get("/:id/stats", (req, res, next) => {
+    res.send("will render file statistics")
 })
 
 router.get("/:id", (req, res, next) => {
