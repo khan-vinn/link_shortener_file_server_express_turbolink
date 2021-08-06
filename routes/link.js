@@ -6,7 +6,7 @@ router.route("/")
     .get(flashMessageProvideToRender,
         ensureNotAuthenticated,
         (req, res, next) => {
-            res.send("Will render link crate form")
+            res.send("Will render link create form")
         })
     .post(ensureNotAuthenticated,
         (req, res, next) => {
@@ -14,9 +14,13 @@ router.route("/")
                 next()
             }
         }, (req, res, next) => { })
-
-router.get("/:id", (req, res, next) => { })
-
-router.get("/:id/stats", ensureNotAuthenticated, (req, res, next) => { })
+    .get("/:id", (req, res, next) => {
+        res.send("will redirect to original link")
+    })
+    .get("/:id/stats",
+        ensureNotAuthenticated,
+        (req, res, next) => {
+            res.send("Will render statistic of link")
+        })
 
 module.exports = router;
