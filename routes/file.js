@@ -2,11 +2,11 @@ const express = require('express');
 const multer = require("multer");
 
 const { File } = require('../models');
-const { ensureNotAuthenticated, flashMessageProvide } = require('./middleware');
+const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
-router.get("/", ensureNotAuthenticated, flashMessageProvide, (req, res, next) => {
+router.get("/", ensureNotAuthenticated, flashMessageProvideToRender, (req, res, next) => {
     res.render("file/form")
 })
 

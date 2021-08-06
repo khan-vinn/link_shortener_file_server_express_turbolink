@@ -2,10 +2,10 @@ const express = require('express');
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { User } = require('../models');
-const { ensureFromAuthenticated, flashMessageProvide, ensureNotAuthenticated } = require('./middleware');
+const { ensureFromAuthenticated, flashMessageProvideToRender, ensureNotAuthenticated } = require('./middleware');
 const router = express.Router();
 
-router.get("/", ensureFromAuthenticated, flashMessageProvide, (req, res) => {
+router.get("/", ensureFromAuthenticated, flashMessageProvideToRender, (req, res) => {
     res.render("auth")
 })
 
