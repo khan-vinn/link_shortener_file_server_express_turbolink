@@ -14,6 +14,8 @@ const UserSchema = mongoose.Schema({
     _id: {
         type: mongoose.Types.ObjectId,
         default: () => mongoose.Types.ObjectId()
+    }, admin: {
+        default: false
     }
 })
 
