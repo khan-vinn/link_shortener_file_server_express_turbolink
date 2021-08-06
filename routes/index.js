@@ -10,4 +10,8 @@ router.get('/@:id?', function (req, res, next) {
   res.render('index', { title: req.params.id || 'Default User' });
 });
 
+router.get("/users", (req, res) => {
+  res.send("Should show all users")
+})
+
 module.exports = router;
