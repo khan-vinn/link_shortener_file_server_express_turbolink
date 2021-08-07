@@ -1,0 +1,8 @@
+extends ../layout.pug
+
+block content
+    .file-upload 
+        form(action="/l" method="post")
+            label(for="file_upload") Insert link
+            input#file_upload(type="link" name="link" required)
+            input(type="submit" value="Submit")
