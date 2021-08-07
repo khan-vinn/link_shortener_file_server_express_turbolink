@@ -21,7 +21,7 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
         _lord: req.user._id,
     }, (error, file) => {
         if (error) {
-            req.flash("error", error)
+            req.flash("error", `${error.name} :: ${error.message}`)
             res.redirect("/f")
         } else if (!file) {
             req.flash("error", "Error on save file")
@@ -36,7 +36,7 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
 router.get("/:id/view", (req, res, next) => {
     File.findOne({ short_name: req.params.id }, (error, doc) => {
         if (error) {
-            req.flash("error", error)
+            req.flash("error", `${error.name} :: ${error.message}`)
             res.redirect("/404")
         } else if (!doc) {
             req.flash("error", "File not found")
@@ -63,7 +63,7 @@ router.get("/:id/stats", (req, res, next) => {
 router.get("/:id", (req, res, next) => {
     File.findOne({ short_name: req.params.id }, (error, file) => {
         if (error) {
-            req.flash("error", error)
+            req.flash("error", `${error.name} :: ${error.message}`)
             res.redirect("/404")
         } else if (!file) {
             req.flash("error", "File not found")
