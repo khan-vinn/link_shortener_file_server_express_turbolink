@@ -3,6 +3,10 @@ const { nanoid } = require("nanoid")
 
 const FileHistorySchema = mongoose.Schema({})
 const FileSchema = mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: () => mongoose.Types.ObjectId()
+    },
     original_name: {
         type: String,
         required: true,

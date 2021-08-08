@@ -2,6 +2,10 @@ const mongoose = require("mongoose")
 const { nanoid } = require("nanoid")
 
 const LinkSchema = mongoose.Schema({
+    _id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: () => mongoose.Types.ObjectId()
+    },
     original_link: {
         type: String,
         required: true,
