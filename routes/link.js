@@ -65,7 +65,7 @@ router.get("/:id",
         res.redirect("/404")
     },
     (req, res, next) => {
-        Link.findOne({ short_link: req.params.id }, (error, linkDoc) => {
+        Link.findOneAndUpdate({ short_link: req.params.id }, { $inc: { redirect_count: 1 } }, (error, linkDoc) => {
             if (error) {
                 req.flash("error", `${error.name} :: ${error.message}`)
                 res.redirect("/404")

@@ -35,6 +35,9 @@ const FileSchema = mongoose.Schema({
     }, full_path: {
         type: String,
         required: true
+    }, download_count: {
+        type: Number,
+        default: 0
     }
 })
 module.exports = FileSchema

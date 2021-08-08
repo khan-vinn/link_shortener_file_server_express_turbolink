@@ -21,6 +21,9 @@ const LinkSchema = mongoose.Schema({
         default: nanoid(6),
         unique: true,
         minLength: 4
+    }, redirect_count: {
+        type: Number,
+        default: 0
     }
 })
 
