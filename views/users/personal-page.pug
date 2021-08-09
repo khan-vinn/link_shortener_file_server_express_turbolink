@@ -1,0 +1,28 @@
+extends layout.pug 
+
+block content
+    h1= user.name
+
+    if links.length>0
+        each link of links
+            div= link
+
+    if files.length> 0
+        each file of files
+            div= file
+
+    .form_update_username
+        form(action="/auth/update/username" method="post")
+            input#new_username(type="text" name="username")
+            input(type="submit" value="Submit")
+
+    .form_update_password
+        form(action="/auth/update/password" method="post") 
+            input#old_pass(type="password" placeholder="Insert old password" name="old_pass")
+            input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
+            input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
+            input(type="submit" value="Sumbit")
+
+    .form_unactivate_profile
+        form(action="/auth/profile/unactivate" method="get")
+            input(type="button" value="Unactive")

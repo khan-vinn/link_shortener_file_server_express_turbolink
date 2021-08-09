@@ -6,7 +6,7 @@ const { ensureFromAuthenticated, flashMessageProvideToRender, ensureNotAuthentic
 const router = express.Router();
 
 router.get("/", ensureFromAuthenticated, flashMessageProvideToRender, (req, res) => {
-    res.render("auth")
+    res.render("users/auth")
 })
 
 router.post("/signin",
