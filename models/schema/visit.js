@@ -1,6 +1,6 @@
 const mongoose = require("mongoose")
 
-const VisitSchema = mongoose.Types({
+const VisitSchema = mongoose.Schema({
     belongs_to: {
         type: mongoose.Types.ObjectId,
         required: true
@@ -13,6 +13,8 @@ const VisitSchema = mongoose.Types({
     }, client: {
         type: String,
         required: true
+    }, lang: {
+        type: String
     }
 })
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const dns = require("dns");
 const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
-const { Link } = require('../models');
+const { Link, Visit } = require('../models');
 const router = express.Router();
 
 router.get("/", flashMessageProvideToRender,
@@ -27,6 +27,7 @@ router.post("/", ensureNotAuthenticated,
             } catch (error) {
                 req.flash("error", `${error.name} :: ${error.message}`)
                 req.flash("error", "DNS, like example.com should be representive")
+                req.flash("error", `${req.body.link} not valid, use like https://github.com/vim`)
                 return res.redirect("/l")
             }
             dns.lookup(urlDns, (error) => {
@@ -43,13 +44,13 @@ router.post("/", ensureNotAuthenticated,
         }
     },
     (req, res, next) => {
-        Link.create({ original_link: req.params.link, _lord: req.user._id }, (error, linkDoc) => {
+        Link.create({ original_link: req.body.link, _lord: req.user._id }, (error, linkDoc) => {
             if (error) {
                 req.flash("error", `${error.name} :: ${error.message}`)
-                res.redirect("/l")
+                return res.redirect("/l")
             } else if (!linkDoc) {
                 req.flash("error", "Error on save link")
-                req.redirect("/l")
+                return req.redirect("/l")
             }
             req.flash("success", "Link created.")
             return res.redirect(`/l/${linkDoc.short_link}/view`)
@@ -74,7 +75,17 @@ router.get("/:id",
                 req.flash("success", "You can use this id, it is ~free!")
                 res.redirect("/404")
             }
-            res.redirect(linkDoc.original_link)
+            Visit.create({
+                belongs_to: linkDoc._id,
+                ip_addr: req.ip,
+                client: req.get("user-agent"),
+                lang: req.header("accept-language")
+            }, (err, visit) => {
+                if (err) {
+                    console.log(err)
+                }
+                res.redirect(linkDoc.original_link)
+            })
         })
     })
 
@@ -95,7 +106,7 @@ router.get("/:id/view",
                 req.flash("success", "You can use this id, it is ~free!")
                 res.redirect("/404")
             }
-            res.render("/links/elem", {})
+            res.render("links/elem", { link: linkDoc })
         })
     })
 

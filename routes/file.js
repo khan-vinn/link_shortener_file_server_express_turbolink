@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require("multer");
 
-const { File } = require('../models');
+const { File, Visit } = require('../models');
 const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
@@ -69,7 +69,17 @@ router.get("/:id", (req, res, next) => {
             req.flash("error", "File not found")
             res.redirect("/404")
         }
-        res.download(file.full_path, file.original_name)
+        Visit.create({
+            belongs_to: file._id,
+            ip_addr: req.ip,
+            client: req.get("user-agent"),
+            lang: req.header("accept-language")
+        }, (err, visit) => {
+            if (err) {
+                console.log(err)
+            }
+            res.download(file.full_path, file.original_name)
+        })
     })
 })
 
