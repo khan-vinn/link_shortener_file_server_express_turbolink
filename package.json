@@ -1,10 +1,13 @@
 {
-  "name": "passport-app",
+  "name": "service",
   "version": "0.0.1",
   "private": true,
   "author": {
     "name": "Shakhan Abdiev",
     "email": "khan.vinn@gmail.com"
+  },
+  "engines": {
+    "node": ">=14"
   },
   "scripts": {
     "start": "nodemon ./bin/www"

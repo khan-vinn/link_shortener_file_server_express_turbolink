@@ -1,28 +1,33 @@
-extends layout.pug 
+extends ../layout.pug 
 
 block content
-    h1= user.name
+    h1= user.username
 
-    if links.length>0
-        each link of links
+    if links && links.length>0
+        each link in links
             div= link
 
-    if files.length> 0
-        each file of files
+    if files && files.length> 0
+        each file in files
             div= file
-
+    -let user_page = `/@${user.username}/update`;
     .form_update_username
-        form(action="/auth/update/username" method="post")
-            input#new_username(type="text" name="username")
+        h1 Update user name
+        form(action=user_page method="post")
+            input#new_username(type="text" placeholder="Insert new username" name="username")
             input(type="submit" value="Submit")
 
     .form_update_password
-        form(action="/auth/update/password" method="post") 
+        h1 Update user password
+        form(action=user_page method="post") 
             input#old_pass(type="password" placeholder="Insert old password" name="old_pass")
             input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
             input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
             input(type="submit" value="Sumbit")
 
     .form_unactivate_profile
-        form(action="/auth/profile/unactivate" method="get")
-            input(type="button" value="Unactive")
+        h1 Profile activity
+        form(action=user_page method="get")
+            input#deactivate_check(type="checkbox" name="Deactivate")
+            label(for="deactivate_check") Deactivate
+            input(type="submit" value="Save")
