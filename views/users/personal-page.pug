@@ -1,33 +1,41 @@
 extends ../layout.pug 
 
 block content
-    h1= user.username
+    h1= `Username: @${user.username}`
 
-    if links && links.length>0
-        each link in links
-            div= link
+    each link in links
+        div= link
+    else 
+        h3 no shortend links
 
-    if files && files.length> 0
-        each file in files
-            div= file
-    -let user_page = `/@${user.username}/update`;
-    .form_update_username
-        h1 Update user name
-        form(action=user_page method="post")
-            input#new_username(type="text" placeholder="Insert new username" name="username")
-            input(type="submit" value="Submit")
+    each file in files
+        div= file
+    else 
+        h3 no upload Files
 
-    .form_update_password
-        h1 Update user password
-        form(action=user_page method="post") 
-            input#old_pass(type="password" placeholder="Insert old password" name="old_pass")
-            input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
-            input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
-            input(type="submit" value="Sumbit")
+    if login
+        a(href="/f") Upload files
+        a(href="/l") Short link  
+        a(href="/auth/logout") Logout
 
-    .form_unactivate_profile
-        h1 Profile activity
-        form(action=user_page method="get")
-            input#deactivate_check(type="checkbox" name="Deactivate")
-            label(for="deactivate_check") Deactivate
-            input(type="submit" value="Save")
+        -let user_page = `/@${user.username}/update`;
+        .form_update_username
+            h1 Update user name
+            form(action=user_page method="post")
+                input#new_username(type="text" placeholder="Insert new username" name="username")
+                input(type="submit" value="Submit")
+
+        .form_update_password
+            h1 Update user password
+            form(action=user_page method="post") 
+                input#old_pass(type="password" placeholder="Insert old password" name="old_pass")
+                input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
+                input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
+                input(type="submit" value="Sumbit")
+
+        .form_unactivate_profile
+            h1 Profile activity
+            form(action=user_page method="get")
+                input#deactivate_check(type="checkbox" name="Deactivate")
+                label(for="deactivate_check") Deactivate
+                input(type="submit" value="Save")

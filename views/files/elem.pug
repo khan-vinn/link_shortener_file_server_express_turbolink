@@ -7,6 +7,6 @@ block content
             p= file_h.size + " bytes"
             p= file_h.type
             p= new Date(file_h.date)
-            p 1 uploads
+            p= `${file_h.uploads} uploads`
             - const fileLink = `/f/${file_h.link}`  
             a(href=fileLink) Open
