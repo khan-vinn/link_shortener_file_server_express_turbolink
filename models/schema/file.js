@@ -30,7 +30,7 @@ const FileSchema = mongoose.Schema({
     }, short_name: {
         type: String,
         required: true,
-        default: nanoid(10),
+        default: () => nanoid(10),
         unique: true,
         minLength: 4
     }, type: {

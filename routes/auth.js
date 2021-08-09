@@ -38,6 +38,67 @@ router.get("/logout", ensureNotAuthenticated, (req, res, next) => {
     res.redirect("/auth")
 })
 
+router.post("/update", ensureNotAuthenticated, (req, res, next) => {
+    if (req.body.username && req.body.username.length > 4) {
+        User.findOneAndUpdate({ _id: req.user._id, username: req.user.username }, { username: req.body.username }, (err, user) => {
+            if (err) {
+                req.flash("error", `${err.name}::${err.message}`)
+                return res.redirect("/")
+            } else if (!user) {
+                req.flash("error", "Dont update username")
+                return res.redirect("/")
+            }
+            req.flash("success", "User name successfuly updated")
+            return res.redirect("/")
+        })
+    } else if (req.body.old_pass && req.body.new_pass && req.body.confirm_new_pass) {
+        if (req.body.old_pass.length > 5) {
+            if (req.body.new_pass === req.body.confirm_new_pass) {
+                bcrypt.compare(req.body.old_pass, req.user.password, (err, data) => {
+                    if (err) {
+                        req.flash("error", "error to compare passwords/ try later")
+                        return res.redirect("/")
+                    } else if (!data) {
+                        console.log(data)
+                        req.flash("error", "incorrect old password")
+                        return res.redirect("/")
+                    }
+                    hash = bcrypt.hash(req.body.new_pass, 12, (err, data) => {
+                        if (err) {
+                            req.flash("error", "Error to hashing new password")
+                            return res.redirect("/")
+                        } else if (!data) {
+                            req.flash("error", "Error to hash, choose another password")
+                            return res.redirect("/")
+                        }
+                        console.log(req.body.new_pass)
+                        User.findOneAndUpdate({ _id: req.user._id, username: req.user.username }, { password: data }, (err, user) => {
+                            if (err) {
+                                req.flash("error", `${err.name}::${err.message}`)
+                                return res.redirect("/")
+                            } else if (!user) {
+                                req.flash("error", "error on update in DB")
+                                return res.redirect("/")
+                            }
+                            req.flash("success", "Successufuly account updated")
+                            return res.redirect("/")
+                        })
+                    })
+                })
+            } else {
+                req.flash("error", "new passwords will be equal")
+                return res.redirect("/")
+            }
+        } else {
+            req.flash("error", "Password length will be greater than 6")
+            return res.redirect("/")
+        }
+    } else {
+        req.flash("error", "Something was wrong")
+        return res.redirect("/")
+    }
+})
+
 router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
     if (typeof (req.body.username) === "string"
         && req.body.username.length > 4

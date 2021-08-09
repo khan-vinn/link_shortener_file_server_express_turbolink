@@ -1,9 +1,9 @@
 const express = require('express');
 const { Link, File, User } = require('../models');
-const { ensureNotAuthenticated } = require('./middleware');
+const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
 const router = express.Router();
 
-router.get('/', ensureNotAuthenticated, function (req, res, next) {
+router.get('/', flashMessageProvideToRender, ensureNotAuthenticated, function (req, res, next) {
   Link.find({ _lord: req.user._id }, (err, links) => {
     if (err) {
       console.log(err)

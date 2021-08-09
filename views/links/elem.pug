@@ -7,4 +7,4 @@ block content
         input(type="text" name="" value=value style="width:300px")
         h2= new Date(link.created_at).toUTCString()
         h2= "Active: "+ link.active
-        h2= link.redirect_count
+        h2= `${link.redirect_count} redirects`

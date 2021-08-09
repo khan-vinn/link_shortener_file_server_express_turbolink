@@ -22,7 +22,7 @@ const LinkSchema = mongoose.Schema({
     }, short_link: {
         type: String,
         required: true,
-        default: nanoid(6),
+        default: () => nanoid(6),
         unique: true,
         minLength: 4
     }, redirect_count: {
