@@ -62,7 +62,7 @@ router.get("/:id/stats", (req, res, next) => {
 })
 
 router.get("/:id", (req, res, next) => {
-    File.findOneAndUpdate({ short_name: req.params.id }, { $inc: { download_count: 1 } }, (error, file) => {
+    File.findOneAndUpdate({ short_name: req.params.id }, { $inc: { download_count: 1 } }, { new: true, timestamps: false }, (error, file) => {
         if (error) {
             req.flash("error", `${error.name} :: ${error.message}`)
             res.redirect("/404")
