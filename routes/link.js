@@ -2,6 +2,7 @@ const express = require('express');
 const dns = require("dns");
 const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
 const { Link, Visit } = require('../models');
+const { linkIdParamsValidate } = require('../middleware/link');
 const router = express.Router();
 
 router.get("/", flashMessageProvideToRender,
@@ -12,11 +13,12 @@ router.get("/", flashMessageProvideToRender,
 
 router.post("/", ensureNotAuthenticated,
     (req, res, next) => {
-        if (typeof (req.body.link) === "string" && (req.body.link.length > 5)) {
+        const { link } = req.body
+        if (typeof (link) === "string" && (link.length > 5)) {
             var protocolHost;
             var urlDns;
             try {
-                protocolHost = req.body.link.split("//")[1];
+                protocolHost = link.split("//")[1];
             } catch (error) {
                 req.flash("error", `${error.name} :: ${error.message}`)
                 req.flash("error", "Link should be valid like https://example.com/link/wich/you/want/shortened")
@@ -27,7 +29,7 @@ router.post("/", ensureNotAuthenticated,
             } catch (error) {
                 req.flash("error", `${error.name} :: ${error.message}`)
                 req.flash("error", "DNS, like example.com should be representive")
-                req.flash("error", `${req.body.link} not valid, use like https://github.com/vim`)
+                req.flash("error", `${link} not valid, use like https://github.com/vim`)
                 return res.redirect("/l")
             }
             dns.lookup(urlDns, (error) => {
@@ -58,13 +60,7 @@ router.post("/", ensureNotAuthenticated,
     })
 
 router.get("/:id",
-    (req, res, next) => {
-        if (req.params.id && typeof (req.params.id) && req.params.id.length > 5) {
-            return next()
-        }
-        req.flash("error", "Link should be represent and valid")
-        res.redirect("/404")
-    },
+    linkIdParamsValidate,
     (req, res, next) => {
         Link.findOneAndUpdate({ short_link: req.params.id }, { $inc: { redirect_count: 1 } }, { new: true, timestamps: false }, (error, linkDoc) => {
             if (error) {
@@ -90,12 +86,7 @@ router.get("/:id",
     })
 
 router.get("/:id/view",
-    (req, res, next) => {
-        if (req.params.id && typeof (req.params.id) && req.params.id.length > 5) {
-            return next()
-        }
-        req.flash("error", "Link should be represent and valid")
-    },
+    linkIdParamsValidate,
     (req, res, next) => {
         Link.findOne({ short_link: req.params.id }, (error, linkDoc) => {
             if (error) {
