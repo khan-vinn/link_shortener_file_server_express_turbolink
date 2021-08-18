@@ -40,7 +40,7 @@ router.get("/logout", ensureNotAuthenticated, (req, res, next) => {
 
 router.post("/update", ensureNotAuthenticated, (req, res, next) => {
     if (req.body.username && req.body.username.length > 4) {
-        User.findOneAndUpdate({ _id: req.user._id, username: req.user.username }, { username: req.body.username }, { new: true, timestamps: false }, (err, user) => {
+        User.findOneAndUpdate({ _id: req.user._id, username: req.user.username }, { username: req.body.username }, { new: true }, (err, user) => {
             if (err) {
                 req.flash("error", `${err.name}::${err.message}`)
                 return res.redirect("/")
