@@ -30,7 +30,7 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
                 req.flash("error", "Error on save file")
                 return res.redirect("/f")
             }
-        }).catch(e => {
+        }).catch(error => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/f")
         })
@@ -69,7 +69,7 @@ router.get("/:id/view", (req, res, next) => {
                 return res.end()
             }
         })
-        .catch(e => {
+        .catch(error => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/404")
         })
