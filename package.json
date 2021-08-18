@@ -32,5 +32,8 @@
     "pug": "2.0.0-beta11",
     "serve-favicon": "^2.5.0",
     "turbolinks-express": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
