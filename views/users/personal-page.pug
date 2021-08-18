@@ -29,7 +29,7 @@ block content
             .form_update_password
                 h1 Update user password
                 form(action=user_page method="post") 
-                    input#old_pass(type="password" placeholder="Insert old password" name="old_pass")
+                    input#old_pass(type="password" placeholder="Insert old password" name="old_pass" autocomplte=false)
                     input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
                     input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
                     input(type="submit" value="Sumbit")

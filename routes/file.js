@@ -45,7 +45,7 @@ router.get("/:id/view", (req, res, next) => {
             return res.render("files/elem", {
                 file_h: {
                     name: doc.original_name,
-                    date: doc.created_at,
+                    date: doc.createdAt,
                     size: doc.size,
                     type: doc.type,
                     link: doc.short_name,
