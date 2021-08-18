@@ -94,7 +94,7 @@ router.post("/update", ensureNotAuthenticated, (req, res, next) => {
             return res.redirect("/")
         }
     } else {
-        req.flash("error", "Something was wrong")
+        req.flash("error", "Enter correct data")
         return res.redirect("/")
     }
 })
