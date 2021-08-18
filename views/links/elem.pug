@@ -5,6 +5,6 @@ block content
         - let value = "http://127.0.0.1:3000/l/"+link.short_link; 
         h1= link.original_link
         input(type="text" name="" value=value style="width:300px")
-        h2= new Date(link.created_at).toUTCString()
+        h2= new Date(link.createdAt).toUTCString()
         h2= "Active: "+ link.active
         h2= `${link.redirect_count} redirects`

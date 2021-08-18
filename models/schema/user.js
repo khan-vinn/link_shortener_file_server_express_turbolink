@@ -17,6 +17,6 @@ const UserSchema = mongoose.Schema({
     }, admin: {
         default: false
     }
-})
+}, { timestamps: true })
 
 module.exports = UserSchema

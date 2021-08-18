@@ -17,10 +17,6 @@ const FileSchema = mongoose.Schema({
     }, size: {
         type: String,
         required: true
-    }, created_at: {
-        type: Number,
-        required: true,
-        default: () => +new Date()
     }, visible: {
         type: Boolean,
         default: true
@@ -43,5 +39,7 @@ const FileSchema = mongoose.Schema({
         type: Number,
         default: 0
     }
+}, {
+    timestamps: true
 })
 module.exports = FileSchema

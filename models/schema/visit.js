@@ -7,15 +7,14 @@ const VisitSchema = mongoose.Schema({
     }, ip_addr: {
         type: String,
         required: true
-    }, time: {
-        type: Number,
-        default: () => +new Date()
     }, client: {
         type: String,
         required: true
     }, lang: {
         type: String
     }
+}, {
+    timestamps: true
 })
 
 module.exports = VisitSchema

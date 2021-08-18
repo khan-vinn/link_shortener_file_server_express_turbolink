@@ -9,10 +9,6 @@ const LinkSchema = mongoose.Schema({
     original_link: {
         type: String,
         required: true,
-    }, created_at: {
-        type: Number,
-        required: true,
-        default: () => +new Date()
     }, active: {
         type: Boolean,
         default: true
@@ -29,6 +25,8 @@ const LinkSchema = mongoose.Schema({
         type: Number,
         default: 0
     }
+}, {
+    timestamps: true
 })
 
 module.exports = LinkSchema
