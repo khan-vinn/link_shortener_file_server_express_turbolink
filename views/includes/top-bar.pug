@@ -1,0 +1,13 @@
+.top_navbar
+    if user
+        .hamburger
+            a(href="#")
+                i.fas.fa-bars
+        .logout
+            - const href = "/auth/logout";
+            a(href=href)
+                i.fas.fa-sign-out-alt
+    else 
+        .logout   
+            a(href="/auth")
+                i.fas.fa-sign-out-alt

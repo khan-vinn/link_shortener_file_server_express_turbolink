@@ -1,0 +1,51 @@
+.profile
+    block name 
+        img(src="")
+        if user
+            h3= user.username
+            p= user.admin
+        else 
+            h3= Guest
+            p Emissary
+ul 
+    li
+        a.active(href="/")
+            span.icon 
+                i.fas.fa-home
+            span.item Home 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-desktop
+            span.item My dashboard 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-user-friends
+            span.item People 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-tachometer-alt
+            span.item Performance  
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-database
+            span.item Development 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-chart-line
+            span.item Reports 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-user-shield
+            span.item Admin 
+    li
+        a(href="#")
+            span.icon 
+                i.fas.fa-cog
+            span.item Settings 
+            
