@@ -1,6 +1,6 @@
 const express = require('express');
 const dns = require("dns");
-const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
+const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
 const { Link, Visit } = require('../models');
 const { linkIdParamsValidate } = require('../middleware/link');
 const router = express.Router();
@@ -46,17 +46,20 @@ router.post("/", ensureNotAuthenticated,
         }
     },
     (req, res, next) => {
-        Link.create({ original_link: req.body.link, _lord: req.user._id }, (error, linkDoc) => {
-            if (error) {
+        Link.create({ original_link: req.body.link, _lord: req.user._id })
+            .then(doc => {
+                console.log(doc)
+                if (doc) {
+                    req.flash("success", "Link created.")
+                    return res.redirect(`/l/${doc.short_link}/view`)
+                } else if (!doc) {
+                    req.flash("error", "Error on save link")
+                    return req.redirect("/l")
+                }
+            }).catch(error => {
                 req.flash("error", `${error.name} :: ${error.message}`)
                 return res.redirect("/l")
-            } else if (!linkDoc) {
-                req.flash("error", "Error on save link")
-                return req.redirect("/l")
-            }
-            req.flash("success", "Link created.")
-            return res.redirect(`/l/${linkDoc.short_link}/view`)
-        })
+            })
     })
 
 router.get("/:id",
@@ -87,6 +90,7 @@ router.get("/:id",
 
 router.get("/:id/view",
     linkIdParamsValidate,
+    flashMessageProvideToRender,
     (req, res, next) => {
         Link.findOne({ short_link: req.params.id }, (error, linkDoc) => {
             if (error) {
