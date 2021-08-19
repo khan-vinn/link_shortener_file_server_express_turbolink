@@ -8,7 +8,7 @@ const upload = multer({ dest: 'uploads/' })
 
 router.get('/',
     ensureNotAuthenticated, flashMessageProvideToRender,
-    (req, res, next) => {
+    (req, res) => {
         res.render("files/form")
     })
 
@@ -34,21 +34,9 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/f")
         })
-    // (error, file) => {
-    //     if (error) {
-    //         req.flash("error", `${error.name} :: ${error.message}`)
-    //         return res.redirect("/f")
-    //     } else if (!file) {
-    //         req.flash("error", "Error on save file")
-    //         return res.redirect("/f")
-    //     } else {
-    //         req.flash("success", "File saved successfully")
-    //         return res.redirect(`/f/${file.short_name}/view`)
-    //     }
-    // }
 })
 
-router.get("/:id/view", (req, res, next) => {
+router.get("/:id/view", flashMessageProvideToRender, (req, res, next) => {
     File.findOne({ short_name: req.params.id })
         .then(doc => {
             if (!doc) {
@@ -73,26 +61,6 @@ router.get("/:id/view", (req, res, next) => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/404")
         })
-    // (error, doc) => {
-    //     if (error) {
-    //         req.flash("error", `${error.name} :: ${error.message}`)
-    //         return res.redirect("/404")
-    //     } else if (!doc) {
-    //         req.flash("error", "File not found")
-    //         return res.redirect("/404")
-    //     } else {
-    //         return res.render("files/elem", {
-    //             file_h: {
-    //                 name: doc.original_name,
-    //                 date: doc.createdAt,
-    //                 size: doc.size,
-    //                 type: doc.type,
-    //                 link: doc.short_name,
-    //                 uploads: doc.download_count
-    //             },
-    //         })
-    //     }
-    // })
 })
 
 router.get("/:id/stats", (req, res, next) => {
@@ -124,26 +92,6 @@ router.get("/:id", (req, res, next) => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/404")
         })
-    // (error, file) => {
-    //     if (error) {
-    //         req.flash("error", `${error.name} :: ${error.message}`)
-    //         res.redirect("/404")
-    //     } else if (!file) {
-    //         req.flash("error", "File not found")
-    //         res.redirect("/404")
-    //     }
-    //     Visit.create({
-    //         belongs_to: file._id,
-    //         ip_addr: req.ip,
-    //         client: req.get("user-agent"),
-    //         lang: req.header("accept-language")
-    //     }, (err, visit) => {
-    //         if (err) {
-    //             console.log(err)
-    //         }
-    //         res.download(file.full_path, file.original_name)
-    //     })
-    // })
 })
 
 module.exports = router;
