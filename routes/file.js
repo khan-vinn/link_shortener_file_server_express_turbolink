@@ -24,8 +24,9 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
     })
         .then(doc => {
             if (doc) {
+                console.log(doc)
                 req.flash("success", "File saved successfully")
-                return res.redirect(`/f/${file.short_name}/view`)
+                return res.redirect(`/f/${doc.short_name}/view`)
             } else {
                 req.flash("error", "Error on save file")
                 return res.redirect("/f")
@@ -73,18 +74,18 @@ router.get("/:id", (req, res, next) => {
         { $inc: { download_count: 1 } },
         { new: true, timestamps: false })
         .then(doc => {
-            if (!doc) {
-                req.flash("error", "File not found")
-                res.redirect("/404")
-            } else if (doc) {
+            if (doc) {
                 fileVisits = doc;
                 return Visit.create({
-                    belongs_to: file._id,
+                    belongs_to: doc._id,
                     ip_addr: req.ip,
                     client: req.get("user-agent"),
                     lang: req.header("accept-language")
                 })
 
+            } else if (!doc) {
+                req.flash("error", "File not found")
+                res.redirect("/404")
             }
         })
         .then(() => res.download(fileVisits.full_path, fileVisits.original_name))
