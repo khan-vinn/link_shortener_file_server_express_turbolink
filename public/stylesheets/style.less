@@ -28,3 +28,129 @@ body {
     padding: 4px;
   }
 }
+* {
+  list-style: none;
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background-image: url("https://cdn.sstatic.net/Sites/unix/img/site-background-image.svg?v=adf85a88e194");
+  background-position: top left;
+  background-repeat: repeat;
+  background-size: 21px 21px;
+  background-attachment: auto;
+
+  &.active {
+    .wrapper {
+      .sidebar {
+        left: -@width_menu;
+      }
+      .section {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  }
+}
+
+@width_menu: 18%;
+
+.wrapper {
+  .sidebar {
+    background: rgb(5, 68, 104);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: @width_menu;
+    height: 100%;
+    padding: 20px 0;
+    transition: all 0.5s ease;
+    &:hover {
+      overflow-y: auto;
+    }
+    .profile {
+      margin-bottom: 30px;
+      text-align: center;
+      img {
+        display: block;
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        margin: 0 auto;
+      }
+      h3 {
+        color: #fff;
+        margin: 10px 0 5px;
+      }
+      p {
+        color: rgb(206, 204, 253);
+        font-size: 14px;
+      }
+    }
+    ul li {
+      a {
+        display: block;
+        padding: 13px 28px;
+        border-bottom: 1px solid #10558d;
+        color: rgb(241, 237, 237);
+        font-size: 16px;
+        position: relative;
+        &:hover,
+        &.active {
+          color: #0c7db1;
+          background: white;
+          border-right: 2px solid rgb(5, 68, 104);
+          .icon {
+            color: #0c7db1;
+          }
+          &:before {
+            display: block;
+          }
+        }
+        .icon {
+          color: #dee4ec;
+          width: 30px;
+          display: inline-block;
+        }
+      }
+    }
+  }
+  .section {
+    width: calc(100%-@width_menu);
+    margin-left: @width_menu;
+    transition: all 0.5s ease;
+    .top_navbar {
+      position: sticky;
+      background-color: rgb(7, 105, 185);
+      height: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 5px 10px;
+      .hamburger,
+      & .logout {
+        a {
+          font-size: 28px;
+          color: #f4fbff;
+          &:hover {
+            color: #a2ecff;
+          }
+        }
+      }
+      .logout {
+        a:hover {
+          color: rgba(235, 30, 30, 0.78);
+        }
+      }
+      .logout {
+        align-self: flex-end;
+      }
+    }
+  }
+}
