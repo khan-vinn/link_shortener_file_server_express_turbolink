@@ -17,6 +17,26 @@ function authParamsValidate(req, res, next) {
     }
 }
 
+function signupParamsValidate(req, res, next) {
+    const { username, password, password_confirm } = req.body
+    if (username && typeof (username) === "string" && username.length > 6) {
+        if (password && password.length > 6) {
+            if (password_confirm && password === password_confirm) {
+                next()
+            } else {
+                req.flash("error", "password should equal password confirm")
+                res.redirect("/auth")
+            }
+        } else {
+            req.flash("error", "password length will be more then 6")
+            res.redirect("/auth")
+        }
+    } else {
+        req.flash("error", "username length will be more then 6")
+        res.redirect("/auth")
+    }
+}
+
 function updateUserUsername(req, res, next) {
     const { username, } = req.body
     if (username && typeof (username) === "string" && username.length > 4) {
@@ -77,4 +97,4 @@ function updateUserPassword(req, res, next) {
     }
 }
 
-module.exports = { authParamsValidate, updateUserUsername, updateUserPassword }
+module.exports = { authParamsValidate, updateUserUsername, updateUserPassword, signupParamsValidate }
