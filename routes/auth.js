@@ -3,7 +3,7 @@ const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { User } = require('../models');
 const { ensureFromAuthenticated, flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
-const { authParamsValidate, updateUserPassword, updateUserUsername } = require('../middleware/auth');
+const { authParamsValidate, updateUserPassword, updateUserUsername, signupParamsValidate } = require('../middleware/auth');
 const router = express.Router();
 
 router.get("/", ensureFromAuthenticated, flashMessageProvideToRender, (req, res) => {
@@ -29,26 +29,28 @@ router.post("/update", ensureNotAuthenticated, updateUserUsername, updateUserPas
         return res.redirect("/")
     })
 
-router.post("/signup", ensureFromAuthenticated, (req, res, next) => {
-    const { username, password } = req.body
-    User.findOne({ username })
-        .then(user => {
-            if (user) {
-                req.flash("error", `username: ${req.body.username} not valid. Try another u-name!`)
+router.post("/signup",
+    ensureFromAuthenticated, signupParamsValidate,
+    (req, res, next) => {
+        const { username, password } = req.body
+        User.findOne({ username })
+            .then(user => {
+                if (user) {
+                    req.flash("error", `username: ${req.body.username} not valid. Try another u-name!`)
+                    return res.redirect("/auth")
+                } else if (!user) {
+                    return bcrypt.hash(password, 12)
+                }
+            })
+            .then(hash => User.create({ username, password: hash }))
+            .then(user => next(null, user))
+            .catch(error => {
+                req.flash("error", `${error.name}::${error.message}`)
                 return res.redirect("/auth")
-            } else if (!user) {
-                return bcrypt.hash(password, 12)
-            }
-        })
-        .then(hash => User.create({ username, password: hash }))
-        .then(user => next(null, user))
-        .catch(error => {
-            req.flash("error", `${error.name}::${error.message}`)
-            return res.redirect("/auth")
-        })
-}, passport.authenticate("local", { failureRedirect: "/auth" }), (req, res) => {
-    req.flash("success", "successufly registred")
-    res.redirect("/")
-})
+            })
+    }, passport.authenticate("local", { failureRedirect: "/auth" }), (req, res) => {
+        req.flash("success", "successufly registred")
+        res.redirect("/")
+    })
 
 module.exports = router;
