@@ -12,6 +12,12 @@ const app = express();
 appUtils(app)
 
 //routes
+app.use(function (req, res, next) {
+  if (req.user) {
+    res.locals.user = req.user
+  }
+  next()
+})
 app.use('/', indexRouter);
 app.use('/auth', authRouter)
 app.use('/f', fileRouter)
