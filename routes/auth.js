@@ -2,7 +2,7 @@ const express = require('express');
 const passport = require("passport");
 const bcrypt = require("bcrypt");
 const { User } = require('../models');
-const { ensureFromAuthenticated, flashMessageProvideToRender, ensureNotAuthenticated } = require('./middleware');
+const { ensureFromAuthenticated, flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
 const { authParamsValidate, updateUserPassword, updateUserUsername } = require('../middleware/auth');
 const router = express.Router();
 

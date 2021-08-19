@@ -1,6 +1,6 @@
 const express = require('express');
 const { Link, File, User } = require('../models');
-const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
+const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
 const router = express.Router();
 
 router.get('/', flashMessageProvideToRender, ensureNotAuthenticated, function (req, res, next) {

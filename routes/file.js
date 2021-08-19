@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require("multer");
 
 const { File, Visit } = require('../models');
-const { ensureNotAuthenticated, flashMessageProvideToRender } = require('./middleware');
+const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
