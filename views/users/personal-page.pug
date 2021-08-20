@@ -2,7 +2,7 @@ extends ../layout.pug
 
 block content
     .content
-        h1= `Username: @${user.username}`
+        h1= `@${user.username}`
 
         each link in links
             div= link
@@ -17,19 +17,3 @@ block content
         if login
             a(href="/f") Upload files
             a(href="/l") Short link  
-            a(href="/auth/logout") Logout
-
-            -let user_page = `/auth/update`;
-            .form_update_username
-                h1 Update user name
-                form(action=user_page method="post")
-                    input#new_username(type="text" placeholder="Insert new username" name="username")
-                    input(type="submit" value="Submit")
-
-            .form_update_password
-                h1 Update user password
-                form(action=user_page method="post") 
-                    input#old_pass(type="password" placeholder="Insert old password" name="old_pass" autocomplte=false)
-                    input#new_pass(type="password" placeholder="Insert new password" name="new_pass")
-                    input#confirm_new_pass(type="password" placeholder="Confirm new password" name="confirm_new_pass")
-                    input(type="submit" value="Sumbit")
