@@ -12,7 +12,7 @@ router.get("/", ensureFromAuthenticated, flashMessageProvideToRender, (req, res)
 
 router.post("/signin",
     authParamsValidate, ensureFromAuthenticated,
-    passport.authenticate('local', { failureRedirect: '/auth', failureFlash: "Password or login incorrected" }),
+    passport.authenticate('local', { failureRedirect: '/auth', failureFlash: "Password or username incorrected" }),
     (req, res) => {
         res.redirect("/")
     })
