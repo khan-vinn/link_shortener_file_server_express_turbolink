@@ -1,4 +1,7 @@
 extends ../layout.pug
+block append head
+    title Update data
+    
 block content 
     if user
         -let user_page = `/auth/update`;
