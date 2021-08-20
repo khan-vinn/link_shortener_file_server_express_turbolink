@@ -1,20 +1,12 @@
 const express = require('express');
 const { Link, File, User } = require('../models');
-const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
+const { flashMessageProvideToRender, findUserLinksFiles, ensureNotAuthenticated } = require('../middleware/middleware');
 const router = express.Router();
 
-router.get('/', flashMessageProvideToRender, ensureNotAuthenticated, function (req, res, next) {
-  Link.find({ _lord: req.user._id }, (err, links) => {
-    if (err) {
-      console.log(err)
-    }
-    File.find({ _lord: req.user._id }, (err, files) => {
-      if (err) {
-        console.log(err)
-      }
-      res.render("users/personal-page", { user: req.user, links, files, login: true });
-    })
-  })
+router.get('/', flashMessageProvideToRender, ensureNotAuthenticated, function (req, res) {
+  findUserLinksFiles(res.locals.user._id)
+    .then(data => res.render("users/personal-page", { links: data[0], files: data[1] }))
+
 });
 
 router.get('/@:id?', function (req, res, next) {
@@ -28,17 +20,8 @@ router.get('/@:id?', function (req, res, next) {
         req.flash("success", "You can register with this username, it's free")
         return res.redirect("/")
       }
-      Link.find({ _lord: user._id }, (err, links) => {
-        if (err) {
-          console.log(err)
-        }
-        File.find({ _lord: user._id }, (err, files) => {
-          if (err) {
-            console.log(err)
-          }
-          res.render("users/personal-page", { user, links, files });
-        })
-      })
+      findUserLinksFiles(user._id)
+        .then(data => res.render("users/id", { visitUser: user, links: data[0], files: data[1] }))
     })
   } else {
     req.flash("error", "try another @username")
@@ -47,7 +30,13 @@ router.get('/@:id?', function (req, res, next) {
 });
 
 router.get("/users", (req, res) => {
-  res.send("Should show all users")
+  User.find({})
+    .then(users => res.render("users/index", { users }))
+})
+
+router.get("/dashboard", ensureNotAuthenticated, (req, res) => {
+  findUserLinksFiles(req.user._id)
+    .then(data => res.render("users/dashboard", { files: data[1], links: data[0] }))
 })
 
 module.exports = router;
