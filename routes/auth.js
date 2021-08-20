@@ -23,6 +23,10 @@ router.get("/logout", ensureNotAuthenticated, (req, res) => {
     res.redirect("/auth")
 })
 
+router.get("/update", ensureNotAuthenticated, (req, res) => {
+    res.render("users/settings")
+})
+
 router.post("/update", ensureNotAuthenticated, updateUserUsername, updateUserPassword,
     (req, res) => {
         req.flash("error", "Please check your inserted data")
