@@ -1,0 +1,13 @@
+extends ../layout.pug 
+block append head
+    title Users
+
+block content 
+    .content
+        each user in users
+            - let userLink = `/@${user.username}`
+            a(href=userLink) 
+                div= `@${user.username}`
+                div= user._id
+        else
+            div no users found
