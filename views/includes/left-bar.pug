@@ -1,6 +1,7 @@
 .profile
     block name 
-        img(src="")
+        -let imgSrc = `https://i.pravatar.cc/100?u=${user._id}` ;
+        img(src=imgSrc)
         if user
             h3= user.username
             p= user.admin
@@ -14,12 +15,12 @@ ul#menu
                 i.fas.fa-home
             span.item Home 
     li
-        a(href="#")
+        a(href="/dashboard")
             span.icon 
                 i.fas.fa-desktop
             span.item My dashboard 
     li
-        a(href="#")
+        a(href="/users")
             span.icon 
                 i.fas.fa-user-friends
             span.item People 
