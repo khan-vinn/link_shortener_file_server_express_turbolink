@@ -1,3 +1,5 @@
+const { Link, File } = require("../models")
+
 function ensureNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next()
@@ -5,6 +7,13 @@ function ensureNotAuthenticated(req, res, next) {
     req.flash("error", "Please login or sign up to coninue")
     res.redirect("/auth")
 }
+
+function findUserLinksFiles(id) {
+    const linkFind = Link.find({ _lord: id }).catch(e => [])
+    const fileFind = File.find({ _lord: id }).catch(e => [])
+    return Promise.all([linkFind, fileFind])
+}
+
 function ensureFromAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         req.flash("error", "You will login to app/ please logout to continue")
@@ -26,4 +35,4 @@ function flashMessageProvideToRender(req, res, next) {
     next()
 }
 
-module.exports = { ensureNotAuthenticated, ensureFromAuthenticated, flashMessageProvideToRender }
+module.exports = { ensureNotAuthenticated, findUserLinksFiles, ensureFromAuthenticated, flashMessageProvideToRender }
