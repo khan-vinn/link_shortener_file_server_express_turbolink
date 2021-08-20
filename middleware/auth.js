@@ -3,7 +3,7 @@ const { User } = require("../models")
 function authParamsValidate(req, res, next) {
     if (typeof (req.body.username) === "string"
         && (req.body.username.length > 4)
-        && (req.body.username.length < 18)) {
+        && (req.body.username.length < 35)) {
         if (typeof (req.body.password) === "string"
             && (req.body.password.length > 5)) {
             next()
