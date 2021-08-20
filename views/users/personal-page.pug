@@ -1,19 +1,14 @@
 extends ../layout.pug 
+block append head
+    title= `@${user.username}`
 
 block content
     .content
         h1= `@${user.username}`
 
-        each link in links
-            div= link
-        else 
-            h3 no shortend links
+        div
+            span= files.length+ " files upladed"
+            span= links.length+ " links shortend"
 
-        each file in files
-            div= file
-        else 
-            h3 no upload Files
-
-        if login
-            a(href="/f") Upload files
-            a(href="/l") Short link  
+        a(href="/f") Upload files
+        a(href="/l") Short link  
