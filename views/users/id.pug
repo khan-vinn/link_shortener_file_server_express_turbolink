@@ -1,0 +1,33 @@
+extends ../layout.pug 
+block append head
+    title= `@${visitUser.username}`
+
+block content 
+    .content
+        -let imgSrc = `https://i.pravatar.cc/150?u=${visitUser._id}` ;
+        img(src=imgSrc, alt="")
+        h1= `@${visitUser.username}`
+
+        div
+            span= files.length+ " files upladed"
+
+            span= links.length+ " links shortend"
+            
+        .group_wrap
+            .group_content
+                - let linkHeader = `${links.length > 0 ? links.lenght > 1 ? "Links" : "Link"  : ""}`;
+                h1= linkHeader
+
+                each link in links
+                    div= link
+                else 
+                    h3 no shortend links
+
+            .group_content
+                - let fileHeader = `${files.length > 0 ? files.lenght > 1 ? "Files" : "File"  : ""}` ;
+                h1= fileHeader
+
+                each file in files
+                    div= file
+                else 
+                    h3 no upload Files
