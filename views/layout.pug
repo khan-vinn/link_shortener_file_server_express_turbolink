@@ -27,11 +27,23 @@ html
     if(user)
       block script 
         script.
-          var hamburger = document.querySelector(".hamburger")
+          var hamburger = document.querySelector(".hamburger");
           hamburger.addEventListener("click", function(){
-            const currentPosition = getCookie("leftSidebar")
-            document.querySelector("body").classList.toggle("active")
-            setCookie("leftSidebar", currentPosition ? 0 : 1 )
+            const currentPosition = getCookie("leftSidebar");
+            document.querySelector("body").classList.toggle("active");
+            setCookie("leftSidebar", currentPosition ? 0 : 1 );
           })
-          getCookie("leftSidebar") ? document.querySelector("body").classList.add("active") : ""
-          
+          getCookie("leftSidebar") ? document.querySelector("body").classList.add("active") : ""; 
+          (function(){
+            const {pathname} = document.location;
+            const ahrefElems = document.getElementById("menu").querySelectorAll("a");
+            for(let i = 0; i < ahrefElems.length; i ++ ){
+              const elem = ahrefElems[i];
+              const elemLink = ahrefElems[i].getAttribute("href");
+              if(elemLink===pathname){
+                elem.classList.add("active");
+              }else{
+                elem.classList.remove("active");
+              }
+            }
+          })();
