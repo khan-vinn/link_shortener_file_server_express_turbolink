@@ -10,13 +10,10 @@ const favicon = require('serve-favicon')
 const flash = require("connect-flash")
 
 function appUtils(app) {
-    // view engine setup
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'pug');
-    //turbolinks
     app.use(turbolinks.redirect)
     app.use(turbolinks.location)
-    //flash messages
     app.use(flash())
 
     app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
