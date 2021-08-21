@@ -34,7 +34,8 @@
     "turbolinks-express": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
-  }, 
+    "nodemon": "^2.0.12",
+    "open": "^8.2.1"
+  },
   "license": "MIT"
 }
