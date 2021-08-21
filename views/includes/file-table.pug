@@ -1,0 +1,29 @@
+table 
+    if files.length>0 
+        - const showFileActive = () => String(user._id)===String(files[0]._lord);
+        thead
+            tr
+                th Name 
+                th Downloads
+                th Date 
+                th ShortLink
+                if user && showFileActive()
+                    th Action
+        tbody
+        tbody 
+            each file in files
+                tr 
+                    td#name= file.original_name
+                    td#count= file.download_count
+                    td= `${new Date(file.createdAt).toUTCString()}`
+                    - const fileShortLink = `/f/${file.short_name}`
+                    td 
+                        a(href=fileShortLink) See
+                        button(link=fileShortLink onclick="saveOnBuffer(this)") Copy link
+                    if user && showFileActive()
+                        td#act  
+                            a(href="/performance/"+file._id) Stats
+                            a(href="") Update
+                            a(href="") Deactivate
+    else 
+        h1 No files

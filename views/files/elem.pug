@@ -3,12 +3,13 @@ block append head
     title File service
 
 block content
-    if file_h
-        .file-view 
-            h1= file_h.name
-            p= file_h.size + " bytes"
-            p= file_h.type
-            p= new Date(file_h.date)
-            p= `${file_h.uploads} uploads`
-            - const fileLink = `/f/${file_h.link}`  
-            a(href=fileLink) Open
+    .content
+        if file_h
+            .file-view 
+                h1= file_h.name
+                p= file_h.size + " bytes"
+                p= file_h.type
+                p= new Date(file_h.date)
+                p= `${file_h.uploads} uploads`
+                - const fileLink = `/f/${file_h.link}`  
+                a(href=fileLink) Open

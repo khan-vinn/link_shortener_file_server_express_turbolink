@@ -46,3 +46,6 @@ html
               }
             }
           })();
+          function saveOnBuffer(context){
+            navigator.clipboard.writeText(document.location.origin + context.getAttribute("link"))
+          }

@@ -1,0 +1,30 @@
+table
+    if links.length > 0
+        - const showLinkActive = () => String(user._id)===String(links[0]._lord);
+        thead
+            tr
+                th Link 
+                th Redirects
+                th Date 
+                th ShortLink
+                if user && showLinkActive() 
+                    th Action
+        tbody
+        tbody 
+            each link in links
+                tr 
+                    td#name
+                        a(href=link.original_link)=link.original_link.split("//")[1].split("/")[0]
+                    td#count= link.redirect_count
+                    td= `${new Date(link.createdAt).toUTCString()}`
+                    - const linkShort = `/l/${link.short_link}`;
+                    td
+                        a(href=linkShort) See 
+                        button(link=linkShort onclick="saveOnBuffer(this)") Copy link
+                    if user && showLinkActive()
+                        td#act 
+                            a(href="/performance/"+link._id) Stats
+                            a(href="")  Update
+                            a(href="")  Deactivate
+    else 
+        h1 No links

@@ -3,8 +3,9 @@ block append head
     title Links service
 
 block content
-    .file-upload 
-        form(action="/l" method="post")
-            label(for="file_upload") Insert link
-            input#file_upload(type="link" name="link" required)
-            input(type="submit" value="Submit")
+    .content
+        .file-upload 
+            form(action="/l" method="post")
+                label(for="file_upload") Insert link
+                input#file_upload(type="link" name="link" required)
+                input(type="submit" value="Submit")
