@@ -154,3 +154,69 @@ body {
     }
   }
 }
+.content {
+  padding: 40px;
+  .group_content {
+    padding: 20px 10px 20px 10px;
+    background-color: rgb(253, 251, 251);
+    table {
+      background-color: #fff;
+      // border-collapse: collapse;
+      border-spacing: 0.05rem;
+      width: 100%;
+      border: 1px solid #ccc;
+      tbody {
+        & tr:nth-child(odd) {
+          background: #eee;
+          border: 1px solid rgb(0, 0, 0);
+        }
+        & tr:hover {
+          background: rgba(255, 255, 0, 0.137);
+          color: gray;
+          cursor: pointer;
+        }
+        td#name {
+          max-width: 160px;
+          min-width: 150px;
+          &:hover,
+          & a:hover {
+            color: red;
+          }
+        }
+      }
+    }
+    th,
+    & td {
+      padding: 0.25rem;
+      font-size: 18px;
+      text-align: left;
+      border: 1px solid rgb(0, 0, 0);
+    }
+    tr td {
+      &#act > * {
+        color: rgb(97, 153, 13);
+        &:hover {
+          color: rgba(236, 47, 13, 0.966);
+        }
+      }
+      &#count {
+        text-align: center;
+        color: #fff;
+        background-color: rgba(134, 196, 41, 0.753);
+      }
+    }
+    tr th {
+      background-color: rgb(5, 68, 104);
+      color: whitesmoke;
+      font-size: 22px;
+    }
+  }
+  .users_list > *{
+    img{
+      border-radius: 100%;
+    }
+    a{
+      margin-top: 20px;
+    }
+  }
+}
