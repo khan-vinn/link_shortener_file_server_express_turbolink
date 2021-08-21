@@ -11,7 +11,6 @@ const linkRouter = require("./routes/link")
 const app = express();
 appUtils(app)
 
-//routes
 app.use(function (req, res, next) {
   if (req.user) {
     res.locals.user = req.user
