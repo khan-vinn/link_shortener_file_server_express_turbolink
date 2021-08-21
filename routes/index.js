@@ -29,11 +29,13 @@ router.get('/@:id?', function (req, res, next) {
   }
 });
 
-router.get("/users", (req, res) => {
+router.get("/community", (req, res) => {
   User.find({})
     .then(users => res.render("users/index", { users }))
 })
-
+router.get("/performance", (req,res)=>{
+  res.send("good job")
+})
 router.get("/dashboard", ensureNotAuthenticated, (req, res) => {
   findUserLinksFiles(req.user._id)
     .then(data => res.render("users/dashboard", { files: data[1], links: data[0] }))
