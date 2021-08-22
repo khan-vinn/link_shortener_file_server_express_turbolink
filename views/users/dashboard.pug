@@ -4,6 +4,12 @@ block append head
 block content
     .content
         .group_content
+            if user  
+                h1 
+                    a(href="/f") Create one+
             include ../includes/file-table
         .group_content
+            if user  
+                h1 
+                    a(href="/l") Create one+
             include ../includes/link-table
