@@ -2,7 +2,7 @@ const express = require('express');
 const dns = require("dns");
 const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
 const { Link, Visit } = require('../models');
-const { linkIdParamsValidate } = require('../middleware/link');
+const { linkIdParamsValidate, linkExistChecker } = require('../middleware/link');
 const router = express.Router();
 
 router.get("/", flashMessageProvideToRender,
@@ -105,10 +105,30 @@ router.get("/:id/view",
         })
     })
 
-router.get("/:id/stats",
-    ensureNotAuthenticated,
+router.get("/:id/stats", linkExistChecker,
     (req, res, next) => {
-        res.send("Will render statistic of link")
+        Visit.find({ belongs_to: res.locals.link._id })
+            .then(doc => res.render("stats/stats", { doc }))
     })
+
+router.get("/:id/update", ensureNotAuthenticated, linkExistChecker, (req, res) => {
+    if (Object.keys(req.query).includes("activate")) {
+        console.log(req.query.activate)
+        if (String(res.locals.user._id) === String(res.locals.link._lord)) {
+            Link.findOneAndUpdate({ _id: res.locals.link._id, short_link: res.locals.link.short_link }, { active: req.query.activate })
+                .then(doc => {
+                    console.log(doc)
+                    req.flash("success", "updated")
+                    return res.redirect("/dashboard")
+                })
+        } else {
+            req.flash("error", "you are not lord of this link")
+            return res.redirect("/")
+        }
+    } else {
+        req.flash("error", "error on update")
+        res.redirect("/dashboard")
+    }
+})
 
 module.exports = router;
