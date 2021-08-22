@@ -33,10 +33,10 @@ router.get("/community", (req, res) => {
   User.find({})
     .then(users => res.render("users/index", { users }))
 })
-router.get("/performance", (req,res)=>{
+router.get("/performance", (req, res) => {
   res.send("good job")
 })
-router.get("/dashboard", ensureNotAuthenticated, (req, res) => {
+router.get("/dashboard", ensureNotAuthenticated, flashMessageProvideToRender, (req, res) => {
   findUserLinksFiles(req.user._id)
     .then(data => res.render("users/dashboard", { files: data[1], links: data[0] }))
 })
