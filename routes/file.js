@@ -3,6 +3,7 @@ const multer = require("multer");
 
 const { File, Visit } = require('../models');
 const { flashMessageProvideToRender, ensureNotAuthenticated } = require('../middleware/middleware');
+const { fileExistChecker } = require('../middleware/file');
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' })
 
@@ -63,8 +64,9 @@ router.get("/:id/view", flashMessageProvideToRender, (req, res, next) => {
         })
 })
 
-router.get("/:id/stats", (req, res, next) => {
-    res.send("will render file statistics")
+router.get("/:id/stats", fileExistChecker, (req, res, next) => {
+    Visit.find({ belongs_to: res.locals.file._id })
+        .then(doc => res.render("stats/stats", { doc }))
 })
 
 router.get("/:id", (req, res, next) => {
@@ -92,6 +94,24 @@ router.get("/:id", (req, res, next) => {
             req.flash("error", `${error.name} :: ${error.message}`)
             return res.redirect("/404")
         })
+})
+
+router.get("/:id/update", ensureNotAuthenticated, fileExistChecker, (req, res) => {
+    if (Object.keys(req.query).includes("activate")) {
+        if (String(res.locals.user._id) === String(res.locals.file._lord)) {
+            File.findOneAndUpdate({ _id: res.locals.file._id, short_name: res.locals.file.short_name }, { visible: req.query.activate },)
+                .then(() => {
+                    req.flash("success", "updated")
+                    return res.redirect("/dashboard")
+                })
+        } else {
+            req.flash("error", "you are not lord of this file")
+            return res.redirect("/")
+        }
+    } else {
+        req.flash("error", "error on update")
+        res.redirect("/dashboard")
+    }
 })
 
 module.exports = router;
