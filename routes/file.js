@@ -24,7 +24,6 @@ router.post('/', ensureNotAuthenticated, upload.single("file"), (req, res) => {
     })
         .then(doc => {
             if (doc) {
-                console.log(doc)
                 req.flash("success", "File saved successfully")
                 return res.redirect(`/f/${doc.short_name}/view`)
             } else {
