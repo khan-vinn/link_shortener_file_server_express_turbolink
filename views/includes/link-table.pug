@@ -24,7 +24,13 @@ table
                     if user && showLinkActive()
                         td#act 
                             a(href="/performance/"+link._id) Stats
-                            a(href="")  Update
-                            a(href="")  Deactivate
+                            - let updateLink = `/l/${link.short_link}/update`
+                            a(href=updateLink)  Update
+                            if link.active 
+                                - let deactivateLink = `/l/${link.short_link}/update?activate=false`;
+                                a(href=deactivateLink) Deactivate
+                            else 
+                                - let activateLink = `/l/${link.short_link}/update?activate=true`;
+                                a(href=activateLink) Activate                            
     else 
         h1 No links
