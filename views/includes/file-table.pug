@@ -22,13 +22,13 @@ table
                         button(link=fileShortLink onclick="saveOnBuffer(this)") Copy link
                     if user && showFileActive()
                         td#act  
-                            a(href="/performance/"+file._id) Stats
+                            a(href="/f/"+file.short_name+"/stats") Stats
                             - let updateFile = `/f/${file.short_name}/update`
                             a(href=updateFile) Update
                             if file.visible 
                                 - let deactivateFile = `/f/${file.short_name}/update?activate=false`
                                 a(href=deactivateFile) Deactivate
-                            else 
+                            else if !file.visible 
                                 - let activateFile = `/f/${file.short_name}/update?activate=true`
                                 a(href=activateFile) Activate                            
 

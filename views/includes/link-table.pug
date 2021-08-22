@@ -23,7 +23,7 @@ table
                         button(link=linkShort onclick="saveOnBuffer(this)") Copy link
                     if user && showLinkActive()
                         td#act 
-                            a(href="/performance/"+link._id) Stats
+                            a(href="/l/"+link.short_link+"/stats") Stats
                             - let updateLink = `/l/${link.short_link}/update`
                             a(href=updateLink)  Update
                             if link.active 
